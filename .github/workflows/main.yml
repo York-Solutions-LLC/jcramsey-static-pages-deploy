@@ -22,19 +22,19 @@ jobs:
     - name: Build site
       run: npm ci && npm run build
     - name: Test
+      id: build
       run: npm test
     - name: Upload pages artifact
       id: deployment
       uses: actions/upload-pages-artifact@v3
       with:
-        name: github-pages
         path: dist/jcramsey-static-pages-deploy/browser
         
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Deploy to GitHub Pages
