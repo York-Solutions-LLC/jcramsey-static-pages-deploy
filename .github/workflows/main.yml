@@ -18,25 +18,31 @@ jobs:
     - name: Prepare Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22.x'
+        node-version: latest
+    - name: Install packages
+      run: npm install
     - name: Build site
-      run: npm ci && npm run build
+      run: npm run build
     - name: Test
       id: build
       run: npm test
+    - name: Configure pages
+      uses: actions/configure-pages@v5
     - name: Upload pages artifact
       id: deployment
+      if: success()
       uses: actions/upload-pages-artifact@v3
       with:
-        path: dist/jcramsey-static-pages-deploy/browser
+        path: dist/jcramsey-static-pages-deploy/browser/
         
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    #environment:
+    #  name: github-pages
+    #  url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     steps:
       - name: Deploy to GitHub Pages
+        if: success()
         id: deployment
         uses: actions/deploy-pages@v4
