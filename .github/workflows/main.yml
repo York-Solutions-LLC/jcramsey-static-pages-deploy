@@ -29,20 +29,10 @@ jobs:
     - name: Configure pages
       uses: actions/configure-pages@v5
     - name: Upload pages artifact
-      id: deployment
       if: success()
       uses: actions/upload-pages-artifact@v3
       with:
         path: dist/jcramsey-static-pages-deploy/browser/
-        
-  deploy:
-    runs-on: ubuntu-latest
-    #environment:
-    #  name: github-pages
-    #  url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        if: success()
-        id: deployment
-        uses: actions/deploy-pages@v4
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
