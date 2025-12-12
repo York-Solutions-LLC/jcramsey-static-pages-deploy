@@ -10,20 +10,32 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
-    - name: Use Node.js
+    - name: Init
+      uses: actions/checkout@v5
+    - name: Prepare Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20.x'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
-    - id: build-publish
-      uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
+        node-version: '22.x'
+    - name: Build site
+      run: npm ci && npm run build
+    - name: Test
+      run: npm test
+    - name: Upload pages artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        checkout: false
-        install_command: echo "npm already installed"
-        build_command: echo "npm already built"
+        name: github-pages
+        path: dist/jcramsey-static-pages-deploy/browser
+        
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
