@@ -25,15 +25,11 @@ jobs:
     - name: Prepare Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: latest
-    - name: Install packages
-      run: npm ci
+        node-version: 22
     - name: Build site
-      run: npm run build
-    - name: Test
-      run: npm test
-    - name: Configure pages
-      uses: actions/configure-pages@v5
+      run: npm ci && npm run build && npm test
+    #- name: Configure pages
+    #  uses: actions/configure-pages@v5
     - name: Upload pages artifact
       if: success()
       uses: actions/upload-pages-artifact@v3
