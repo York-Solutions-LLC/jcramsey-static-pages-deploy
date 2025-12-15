@@ -34,11 +34,14 @@ jobs:
       if: success()
       run: npm run build
     - name: Configure pages
+      if: success()
+      id: pages
       uses: actions/configure-pages@v5
     - name: Upload pages artifact
       if: success()
       uses: actions/upload-pages-artifact@v3
       with:
+        name: github-pages
         path: dist/jcramsey-static-pages-deploy/browser/
     - name: Deploy to GitHub Pages
       id: deployment
