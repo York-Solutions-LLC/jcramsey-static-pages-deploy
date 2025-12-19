@@ -20,7 +20,7 @@ export class NumberInputField {
         this.cachedNumber.emit((filtered.length === 0) ? 0 : Number(filtered));
     }
 
-    static applyInputFilter(input: number): string {
+    static applyInputFilter(input: string): string {
         const numberRegex = /[0-9]/;
         const value = input.trim();
         
