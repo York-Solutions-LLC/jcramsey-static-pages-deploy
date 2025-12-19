@@ -38,11 +38,12 @@ jobs:
         if [ -z "$testreturn" ]; then
           echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
         else
+          strippedoutput=$(echo "$testoutput" | sed -e 's/\x1b\[[0-9;]*m//g')
+          filteredoutput=$(echo "$strippedoutput" | grep -E '^Expected:|^Received:|^.+\s\S+\.spec\.ts:\d+:\d+$|^.+ERROR')
           echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
           echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          #echo "$testoutput" >> $GITHUB_STEP_SUMMARY
-          cat test-results.txt >> $GITHUB_STEP_SUMMARY
+          echo "$filteredoutput" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           exit $testreturn
         fi
@@ -55,10 +56,12 @@ jobs:
         if [ -z "$buildreturn" ]; then
           echo '**RESULTS:** Successful!' >> $GITHUB_STEP_SUMMARY
         else
+          strippedoutput=$(echo "$testoutput" | sed -e 's/\x1b\[[0-9;]*m//g')
+          filteredoutput=$(echo "$strippedoutput" | grep -E '^Expected:|^Received:|^.+\s\S+\.spec\.ts:\d+:\d+$|^.+ERROR')
           echo '**RESULTS:** Failed!' >> $GITHUB_STEP_SUMMARY
           echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "$buildoutput" >> $GITHUB_STEP_SUMMARY
+          echo "$filteredoutput" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           exit $buildreturn
         fi
