@@ -45,7 +45,7 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           exit $testreturn
         fi
-      
+
     - name: Build
       run: |
         set -o pipefail
