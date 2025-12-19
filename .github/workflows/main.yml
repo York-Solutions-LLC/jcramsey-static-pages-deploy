@@ -32,6 +32,8 @@ jobs:
       
     - name: Test
       run: |
+        which grep
+        which sed
         set -o pipefail
         testoutput=$(npm test 2>&1) || testreturn=$?
         echo '### Angular Tests' >> $GITHUB_STEP_SUMMARY
