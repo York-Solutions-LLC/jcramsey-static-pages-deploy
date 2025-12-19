@@ -31,38 +31,36 @@ jobs:
       
     - name: Test
       run: |
-        if [ -f test-results.txt ]; then
-          rm test-results.txt
-        fi
-        npm test
+        set -o pipefail
+        testoutput=$(npm test) || testreturn=$?
+        set +o pipefail
         echo '### Angular Tests' >> $GITHUB_STEP_SUMMARY
-        if [ -s test-results.txt ]; then
+        if [ -z "$testreturn" ]; then
+          echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
+        else
           echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
-          echo "#### Report Exerpt" >> $GITHUB_STEP_SUMMARY
+          echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          cat test-results.txt >> $GITHUB_STEP_SUMMARY
+          echo "$testoutput" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           exit 1
-        else
-          echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
         fi
       
     - name: Build
       run: |
-        if [ -f build-results.txt ]; then
-          rm build-results.txt
-        fi
-        npm run build
+        set -o pipefail
+        buildoutput=$(npm run build) || buildreturn=$?
+        set +o pipefail
         echo '### Angular Build' >> $GITHUB_STEP_SUMMARY
-        if [ -s build-results.txt ]; then
+        if [ -z "$buildreturn" ]; then
+          echo '**RESULTS:** Successful!' >> $GITHUB_STEP_SUMMARY
+        else
           echo '**RESULTS:** Failed!' >> $GITHUB_STEP_SUMMARY
-          echo "#### Report Exerpt" >> $GITHUB_STEP_SUMMARY
+          echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          cat build-results.txt >> $GITHUB_STEP_SUMMARY
+          echo "$buildoutput" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           exit 1
-        else
-          echo '**RESULTS:** Successful!' >> $GITHUB_STEP_SUMMARY
         fi
         
     - name: Configure pages
