@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng test --coverage=true --watch=false && ng serve",
+    "build": "ng build 2>&1 | sed -e 's/\\x1b\\[[0-9;]*m//g' | grep -E '^Expected:|^Received:|^.+\\s(?:\\S+/)+\\S+\\.spec\\.ts:\\d+:\\d+$|^.+ERROR' > \"build-results.txt\"",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test --coverage=true --watch=false 2>&1 | sed -e 's/\\x1b\\[[0-9;]*m//g' | grep -E '^Expected:|^Received:|^.+\\s(?:\\S+/)+\\S+\\.spec\\.ts:\\d+:\\d+$|^.+ERROR' > \"build-results.txt\""
   },
   "prettier": {
     "printWidth": 100,
@@ -29,9 +29,9 @@
     "@angular/compiler": "^21.0.0",
     "@angular/core": "^21.0.0",
     "@angular/forms": "^21.0.0",
-    "@angular/material": "^21.0.3",
     "@angular/platform-browser": "^21.0.0",
     "@angular/router": "^21.0.0",
+    "@vitest/coverage-v8": "^4.0.15",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

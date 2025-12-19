@@ -14,35 +14,85 @@ concurrency:
   cancel-in-progress: false
   
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    timeout-minutes: 10
     steps:
     - name: Init
       uses: actions/checkout@v5
+      
     - name: Prepare Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 22
+        
     - name: Install
       run: npm ci
+      
     - name: Test
-      run: npm test
+      run: |
+        if [ -f test-results.txt ]; then
+          rm test-results.txt
+        fi
+        npm test
+        echo "### Angular Tests" >> $GITHUB_STEP_SUMMARY"
+        if [ -s test-results.txt ]; then
+          echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
+          echo "#### Report Exerpt" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat test-results.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        else
+          echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
+        fi
+      
     - name: Build
-      if: success()
-      run: npm run build
+      run: |
+        if [ -f build-results.txt ]; then
+          rm build-results.txt
+        fi
+        npm run build
+        echo "### Angular Build" >> $GITHUB_STEP_SUMMARY"
+        if [ -s build-results.txt ]; then
+          echo '**RESULTS:** Failed!' >> $GITHUB_STEP_SUMMARY
+          echo "#### Report Exerpt" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat build-results.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        else
+          echo '**RESULTS:** Successful!' >> $GITHUB_STEP_SUMMARY
+        fi
+        
     - name: Configure pages
-      if: success()
-      id: pages
       uses: actions/configure-pages@v5
+      
     - name: Upload pages artifact
-      if: success()
       uses: actions/upload-pages-artifact@v3
       with:
         name: github-pages
         path: dist/jcramsey-static-pages-deploy/browser/
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: build
+    steps:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+
+    - name: Details
+      if: always()
+      run: |
+        echo "### Deployment" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ steps.deployment.outcome }}" = "success" ]; then
+          echo 'Deployment successful! Woo!'
+          echo "Check it out at ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
+        else
+          echo 'Deployment failed! :c' >> $GITHUB_STEP_SUMMARY
+        fi
