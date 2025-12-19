@@ -6,7 +6,7 @@
     "start": "ng test --coverage=true --watch=false && ng serve",
     "build": "ng build 2>&1 | sed -e 's/\\x1b\\[[0-9;]*m//g' | grep -E '^Expected:|^Received:|^.+\\s(?:\\S+/)+\\S+\\.spec\\.ts:\\d+:\\d+$|^.+ERROR' > \"build-results.txt\"",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --coverage=true --watch=false 2>&1 | sed -e 's/\\x1b\\[[0-9;]*m//g' | grep -E '^Expected:|^Received:|^.+\\s(?:\\S+/)+\\S+\\.spec\\.ts:\\d+:\\d+$|^.+ERROR' > \"build-results.txt\""
+    "test": "ng test --coverage=true --watch=false 2>&1 | sed -e 's/\\x1b\\[[0-9;]*m//g' | grep -E '^Expected:|^Received:|^.+\\s(?:\\S+/)+\\S+\\.spec\\.ts:\\d+:\\d+$|^.+ERROR' > \"test-results.txt\""
   },
   "prettier": {
     "printWidth": 100,
