@@ -34,9 +34,12 @@ jobs:
         if [ -f test-results.txt ]; then
           rm test-results.txt
         fi
-        npm test 2>&1 > /dev/null
+        set -o pipefail
+        testoutput=$(npm test 2>&1)
+        teststatus=$?
+        set +o pipefail
         echo "### Angular Tests" >> $GITHUB_STEP_SUMMARY"
-        if [ -s test-results.txt ]; then
+        if [ $teststatus -ne 0 ]; then
           echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
           echo "#### Report Exerpt" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
