@@ -33,7 +33,6 @@ jobs:
       run: |
         set -o pipefail
         testoutput=$(npm test) || testreturn=$?
-        set +o pipefail
         echo '### Angular Tests' >> $GITHUB_STEP_SUMMARY
         if [ -z "$testreturn" ]; then
           echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
@@ -43,14 +42,13 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "$testoutput" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          exit 1
+          exit $testreturn
         fi
       
     - name: Build
       run: |
         set -o pipefail
         buildoutput=$(npm run build) || buildreturn=$?
-        set +o pipefail
         echo '### Angular Build' >> $GITHUB_STEP_SUMMARY
         if [ -z "$buildreturn" ]; then
           echo '**RESULTS:** Successful!' >> $GITHUB_STEP_SUMMARY
@@ -60,7 +58,7 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "$buildoutput" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          exit 1
+          exit $buildreturn
         fi
         
     - name: Configure pages
