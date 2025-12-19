@@ -37,12 +37,12 @@ jobs:
         echo '### Angular Tests' >> $GITHUB_STEP_SUMMARY
         if [ -z "$testreturn" ]; then
           echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
-          exit 0
         else
           echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
           echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "$testoutput" >> $GITHUB_STEP_SUMMARY
+          #echo "$testoutput" >> $GITHUB_STEP_SUMMARY
+          cat test-results.txt >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           exit $testreturn
         fi
