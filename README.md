@@ -20,6 +20,20 @@ Want to add new operations to the calculator? Below is a guide, which should hel
 
 For example, let's say we want to add a **modulus operation**.
 
+### 1 - Adding the Choice
+
+Go to `src/app/op-selector/op-selector.html`.
+
+Add the following lines:
+
+```html
+<input type="radio" value="mod" id="mod" name="selectedOperation"
+       (change)="onRadioSelection(4)"/>
+<label for="mod" aria-label="Modulus">Mod</label>
+```
+
+### 2 - Adding the Functionality
+
 Go to `src/app/app.ts`.
 
 Add a new mapping line for the modulus operation:
@@ -42,7 +56,9 @@ Then add the following function to the class definition:
     }
 ```
 
-Now, go to `src/app/app.spec.ts` so we can add unit tests.
+### 3 - Adding the Test Case
+
+Go to `src/app/app.spec.ts` so we can add unit tests.
 
 Add the following test case:
 
@@ -53,6 +69,8 @@ Add the following test case:
         expect(result).toBe(0);
     });
 ```
+
+### 4 - Confirmation
 
 Now test the new operation:
 
