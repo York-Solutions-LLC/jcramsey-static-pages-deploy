@@ -2,6 +2,8 @@
 
 This is a simple four-function calculator, to practice GitHub actions and pages deployment.
 
+You can find it [live on GitHub Pages](https://york-solutions-llc.github.io/jcramsey-static-pages-deploy/).
+
 ## Local Run
 
 To start a local development server, run:
