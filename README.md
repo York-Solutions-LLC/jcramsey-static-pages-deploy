@@ -1,59 +1,59 @@
-# StaticSiteTest
+# GitHub Pages Deployment Project
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+This is a simple four-function calculator, to practice GitHub actions and pages deployment.
 
-## Development server
+## Local Run
 
 To start a local development server, run:
 
 ```bash
-ng serve
+npm run serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The server will be live at `http://localhost:4200/`.
 
-## Code scaffolding
+## Adding New Operations
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Want to add new operations to the calculator? Below is a guide, which should help.
+
+For example, let's say we want to add a **modulus operation**.
+
+Go to `src/app/app.ts`.
+
+Add a new mapping line for the modulus operation:
+
+```ts
+    public static getOperation(mode: number): (a: number, b: number) => number {
+        if (mode === 1) return App.subOperation;
+        if (mode === 2) return App.mulOperation;
+        if (mode === 3) return App.divOperation;
+        if (mode === 4) return App.modOperation; // <- This is our new line
+        return App.addOperation;
+    }
+```
+
+Then add the following function to the class definition:
+
+```ts
+    public static modOperation(a: number, b: number): number {
+        return a % b;
+    }
+```
+
+Now, go to `src/app/app.spec.ts` so we can add unit tests.
+
+Add the following test case:
+
+```ts
+    it('should correctly map modulus', async () => {
+        const operation = App.getOperation(4); // We mapped modulus to index 4
+        const result = operation(4, 2);
+        expect(result).toBe(0);
+    });
+```
+
+Now test the new operation:
 
 ```bash
-ng generate component component-name
+npm test
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
