@@ -1,12 +1,38 @@
 # GitHub Pages Deployment Project
 
+[![Build and Deploy](https://github.com/York-Solutions-LLC/jcramsey-static-pages-deploy/actions/workflows/main.yml/badge.svg)](https://github.com/York-Solutions-LLC/jcramsey-static-pages-deploy/actions/workflows/main.yml)
+
 This is a simple four-function calculator, to practice GitHub actions and pages deployment.
 
 You can find it [live on GitHub Pages](https://york-solutions-llc.github.io/jcramsey-static-pages-deploy/).
 
 ## Local Run
 
-To start a local development server, run:
+### 1 - Clone the Repo
+
+```bash
+git clone git@github.com:York-Solutions-LLC/jcramsey-static-pages-deploy.git
+```
+
+### 2 - Enter the Repo Directory
+
+```bash
+cd jcramsey-static-pages-deploy
+```
+
+### 3 - Install the Dependencies
+
+```bash
+npm i
+```
+
+### 4 - Build the Project
+
+```bash
+npm run build
+```
+
+### 5 - Serve Locally
 
 ```bash
 npm run serve
