@@ -10,7 +10,7 @@ import { OpSelector } from './op-selector/op-selector';
     styleUrl: './app.scss'
 })
 export class App {
-    protected readonly title = signal('jcramsey-static-pages-deploy');
+    protected readonly title = signal('Test Calculator');
 
     firstNumber: number = 0;
     operation: number = 0;
