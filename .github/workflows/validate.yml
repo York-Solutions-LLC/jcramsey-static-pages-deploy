@@ -1,9 +1,8 @@
 name: Validate Pull Request
 on:
   pull-request:
-    branches:
-      types: [opened, synchronize, reopened, ready_for_review]
-      branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
   
 jobs:
   validate:
