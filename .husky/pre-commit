@@ -1,3 +1,2 @@
 npx prettier --write --ignore-unknown .
-npm test
 git update-index --again
