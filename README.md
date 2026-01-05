@@ -53,8 +53,7 @@ Go to `src/app/op-selector/op-selector.html`.
 Add the following lines:
 
 ```html
-<input type="radio" value="mod" id="mod" name="selectedOperation"
-       (change)="onRadioSelection(4)"/>
+<input type="radio" value="mod" id="mod" name="selectedOperation" (change)="onRadioSelection(4)" />
 <label for="mod" aria-label="Modulus">Mod</label>
 ```
 
@@ -89,11 +88,11 @@ Go to `src/app/app.spec.ts` so we can add unit tests.
 Add the following test case:
 
 ```ts
-    it('should correctly map modulus', async () => {
-        const operation = App.getOperation(4); // We mapped modulus to index 4
-        const result = operation(4, 2);
-        expect(result).toBe(0);
-    });
+it('should correctly map modulus', async () => {
+  const operation = App.getOperation(4); // We mapped modulus to index 4
+  const result = operation(4, 2);
+  expect(result).toBe(0);
+});
 ```
 
 ### 4 - Confirmation

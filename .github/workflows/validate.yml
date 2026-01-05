@@ -3,7 +3,7 @@ on:
   pull_request:
     branches:
       - main
-  
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -12,32 +12,32 @@ jobs:
       pull-requests: write
     timeout-minutes: 10
     steps:
-    - name: Init
-      uses: actions/checkout@v5
-      
-    - name: Prepare Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: "npm"
-        
-    - name: Install
-      run: npm ci
-      
-    - name: Test
-      run: |
-        set -o pipefail
-        testoutput=$(npm test 2>&1) || testreturn=$?
-        echo '### Angular Tests' >> $GITHUB_STEP_SUMMARY
-        if [ -z "$testreturn" ]; then
-          echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
-        else
-          strippedoutput=$(echo "$testoutput" | sed -e 's/\x1b\[[0-9;]*m//g')
-          filteredoutput=$(echo "$strippedoutput" | grep -E '^Expected:|^Received:|^.. +[^ ]+:[0-9]+:[0-9]+|^.+ERROR')
-          echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
-          echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "$filteredoutput" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          exit $testreturn
-        fi
+      - name: Init
+        uses: actions/checkout@v5
+
+      - name: Prepare Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: |
+          set -o pipefail
+          testoutput=$(npm test 2>&1) || testreturn=$?
+          echo '### Angular Tests' >> $GITHUB_STEP_SUMMARY
+          if [ -z "$testreturn" ]; then
+            echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
+          else
+            strippedoutput=$(echo "$testoutput" | sed -e 's/\x1b\[[0-9;]*m//g')
+            filteredoutput=$(echo "$strippedoutput" | grep -E '^Expected:|^Received:|^.. +[^ ]+:[0-9]+:[0-9]+|^.+ERROR')
+            echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
+            echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$filteredoutput" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit $testreturn
+          fi

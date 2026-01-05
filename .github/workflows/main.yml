@@ -2,7 +2,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - "main"
+      - 'main'
 
 permissions:
   contents: read
@@ -10,70 +10,70 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - name: Init
-      uses: actions/checkout@v5
-      
-    - name: Prepare Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: "npm"
-        
-    - name: Install
-      run: npm ci
-      
-    - name: Test
-      run: |
-        set -o pipefail
-        testoutput=$(npm test 2>&1) || testreturn=$?
-        echo '### Angular Tests' >> $GITHUB_STEP_SUMMARY
-        if [ -z "$testreturn" ]; then
-          echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
-        else
-          strippedoutput=$(echo "$testoutput" | sed -e 's/\x1b\[[0-9;]*m//g')
-          filteredoutput=$(echo "$strippedoutput" | grep -E '^Expected:|^Received:|^.. +[^ ]+:[0-9]+:[0-9]+|^.+ERROR')
-          echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
-          echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "$filteredoutput" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          exit $testreturn
-        fi
+      - name: Init
+        uses: actions/checkout@v5
 
-    - name: Build
-      run: |
-        set -o pipefail
-        buildoutput=$(npm run build 2>&1) || buildreturn=$?
-        echo '### Angular Build' >> $GITHUB_STEP_SUMMARY
-        if [ -z "$buildreturn" ]; then
-          echo '**RESULTS:** Successful!' >> $GITHUB_STEP_SUMMARY
-        else
-          strippedoutput=$(echo "$buildoutput" | sed -e 's/\x1b\[[0-9;]*m//g')
-          filteredoutput=$(echo "$strippedoutput" | grep -E '^Expected:|^Received:|^.. +[^ ]+:[0-9]+:[0-9]+|^.+ERROR')
-          echo '**RESULTS:** Failed!' >> $GITHUB_STEP_SUMMARY
-          echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "$filteredoutput" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          exit $buildreturn
-        fi
-        
-    - name: Configure pages
-      uses: actions/configure-pages@v5
-      
-    - name: Upload pages artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        name: github-pages
-        path: dist/jcramsey-static-pages-deploy/browser/
+      - name: Prepare Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: |
+          set -o pipefail
+          testoutput=$(npm test 2>&1) || testreturn=$?
+          echo '### Angular Tests' >> $GITHUB_STEP_SUMMARY
+          if [ -z "$testreturn" ]; then
+            echo '**RESULTS:** Passing!' >> $GITHUB_STEP_SUMMARY
+          else
+            strippedoutput=$(echo "$testoutput" | sed -e 's/\x1b\[[0-9;]*m//g')
+            filteredoutput=$(echo "$strippedoutput" | grep -E '^Expected:|^Received:|^.. +[^ ]+:[0-9]+:[0-9]+|^.+ERROR')
+            echo '**RESULTS:** Failing!' >> $GITHUB_STEP_SUMMARY
+            echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$filteredoutput" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit $testreturn
+          fi
+
+      - name: Build
+        run: |
+          set -o pipefail
+          buildoutput=$(npm run build 2>&1) || buildreturn=$?
+          echo '### Angular Build' >> $GITHUB_STEP_SUMMARY
+          if [ -z "$buildreturn" ]; then
+            echo '**RESULTS:** Successful!' >> $GITHUB_STEP_SUMMARY
+          else
+            strippedoutput=$(echo "$buildoutput" | sed -e 's/\x1b\[[0-9;]*m//g')
+            filteredoutput=$(echo "$strippedoutput" | grep -E '^Expected:|^Received:|^.. +[^ ]+:[0-9]+:[0-9]+|^.+ERROR')
+            echo '**RESULTS:** Failed!' >> $GITHUB_STEP_SUMMARY
+            echo '#### Report Excerpt' >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$filteredoutput" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit $buildreturn
+          fi
+
+      - name: Configure pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: dist/jcramsey-static-pages-deploy/browser/
 
   deploy:
     environment:
@@ -83,17 +83,17 @@ jobs:
     timeout-minutes: 5
     needs: build
     steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
-    - name: Details
-      if: always()
-      run: |
-        echo "### Deployment" >> $GITHUB_STEP_SUMMARY
-        if [ "${{ steps.deployment.outcome }}" = "success" ]; then
-          echo 'Deployment successful! Woo!'
-          echo "Check it out at ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
-        else
-          echo 'Deployment failed! :c' >> $GITHUB_STEP_SUMMARY
-        fi
+      - name: Details
+        if: always()
+        run: |
+          echo "### Deployment" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.deployment.outcome }}" = "success" ]; then
+            echo 'Deployment successful! Woo!'
+            echo "Check it out at ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo 'Deployment failed! :c' >> $GITHUB_STEP_SUMMARY
+          fi
