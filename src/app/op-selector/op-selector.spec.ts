@@ -8,9 +8,8 @@ describe('OpSelector', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OpSelector]
-    })
-    .compileComponents();
+      imports: [OpSelector],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(OpSelector);
     component = fixture.componentInstance;

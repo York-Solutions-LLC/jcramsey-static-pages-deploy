@@ -6,7 +6,8 @@
     "start": "ng test --coverage=true --watch=false && ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --coverage=true --watch=false"
+    "test": "ng test --coverage=true --watch=false",
+    "prepare": "husky"
   },
   "prettier": {
     "printWidth": 100,
@@ -39,8 +40,15 @@
     "@angular/build": "^21.0.3",
     "@angular/cli": "^21.0.3",
     "@angular/compiler-cli": "^21.0.0",
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
     "jsdom": "^27.1.0",
+    "prettier": "^3.7.4",
     "typescript": "~5.9.2",
+    "typescript-eslint": "^8.51.0",
     "vitest": "^4.0.8"
   }
 }

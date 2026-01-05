@@ -1,9 +1,9 @@
 <main>
   <h1>Hello, {{ title() }}</h1>
   <p>Behold: The Calculator!</p>
-  <app-number-input-field (cachedNumber)="onFirstNumberChange($event)"/><br>
-  <app-op-selector (cachedMode)="onOperationChange($event)"/><br>
-  <app-number-input-field (cachedNumber)="onSecondNumberChange($event)"/>
+  <app-number-input-field (cachedNumber)="onFirstNumberChange($event)" /><br />
+  <app-op-selector (cachedMode)="onOperationChange($event)" /><br />
+  <app-number-input-field (cachedNumber)="onSecondNumberChange($event)" />
   <p>Result: {{ result }}</p>
 </main>
 
