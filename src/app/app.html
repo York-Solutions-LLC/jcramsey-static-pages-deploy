@@ -1,10 +1,10 @@
 <main>
   <h1>Hello, {{ title() }}</h1>
   <p>Behold: The Calculator!</p>
-  <app-number-input-field (cachedNumber)="onFirstNumberChange($event)" /><br />
+  <app-number-input-field id="first-input" (cachedNumber)="onFirstNumberChange($event)" /><br />
   <app-op-selector (cachedMode)="onOperationChange($event)" /><br />
-  <app-number-input-field (cachedNumber)="onSecondNumberChange($event)" />
-  <p>Result: {{ result }}</p>
+  <app-number-input-field id="second-input" (cachedNumber)="onSecondNumberChange($event)" />
+  <p id="result-text">Result: {{ result }}</p>
 </main>
 
 <router-outlet />
