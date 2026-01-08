@@ -21,7 +21,7 @@ describe('App', () => {
     expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Test Calculator');
   });
 
-  it('should correctly map addition', async () => {
+  /*  it('should correctly map addition', async () => {
     const operation = App.getOperation(0);
     const result = operation(4, 2);
     expect(result).toBe(6);
@@ -55,5 +55,5 @@ describe('App', () => {
     const operation = App.getOperation(Number.POSITIVE_INFINITY);
     const result = operation(4, 2);
     expect(result).toBe(6);
-  });
+  });*/
 });

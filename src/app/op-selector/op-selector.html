@@ -1,15 +1,13 @@
-<input
-  type="radio"
-  value="add"
-  id="add"
-  name="selectedOperation"
-  checked
-  (change)="onRadioSelection(0)"
-/>
-<label for="add" aria-label="Add">Add</label>
-<input type="radio" value="sub" id="sub" name="selectedOperation" (change)="onRadioSelection(1)" />
-<label for="sub" aria-label="Subtract">Sub</label>
-<input type="radio" value="mul" id="mul" name="selectedOperation" (change)="onRadioSelection(2)" />
-<label for="mul" aria-label="Multiply">Mul</label>
-<input type="radio" value="div" id="div" name="selectedOperation" (change)="onRadioSelection(3)" />
-<label for="div" aria-label="Divide">Div</label>
+@for (operator of operators; track operator.id) {
+  <input
+    type="radio"
+    [value]="operator.shortName"
+    [id]="operator.shortName"
+    name="selectedOperation"
+    (change)="onRadioSelection(operator.id)"
+    [checked]="operator.isFirst"
+  />
+  <label [for]="operator.shortName" [aria-label]="operator.longName">{{
+    operator.printedName
+  }}</label>
+}
