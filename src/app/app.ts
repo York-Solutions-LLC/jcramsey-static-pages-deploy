@@ -1,6 +1,7 @@
 import { Component, Signal, signal, computed } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NumberInputField } from './number-input-field/number-input-field';
+import { Operator, operators } from './operators';
 import { OpSelector } from './op-selector/op-selector';
 
 @Component({
@@ -13,7 +14,7 @@ export class App {
   protected readonly title = signal('Test Calculator');
 
   firstNumber: number = 0;
-  operation: number = 0;
+  operation: Operator = operators[0];
   secondNumber: number = 0;
   result: string = '0';
 
@@ -22,7 +23,7 @@ export class App {
     this.processNumbers();
   }
 
-  onOperationChange(mode: number) {
+  onOperationChange(mode: Operator) {
     this.operation = mode;
     this.processNumbers();
   }
@@ -33,32 +34,7 @@ export class App {
   }
 
   processNumbers() {
-    const operation = App.getOperation(this.operation);
-    const result = operation(this.firstNumber, this.secondNumber);
+    const result = this.operation.f(this.firstNumber, this.secondNumber);
     this.result = isNaN(result) ? 'No solution' : String(result);
-  }
-
-  public static addOperation(a: number, b: number): number {
-    return a + b;
-  }
-
-  public static subOperation(a: number, b: number): number {
-    return a - b;
-  }
-
-  public static mulOperation(a: number, b: number): number {
-    return a * b;
-  }
-
-  public static divOperation(a: number, b: number): number {
-    if (b === 0) return Number.NaN;
-    return a / b;
-  }
-
-  public static getOperation(mode: number): (a: number, b: number) => number {
-    if (mode === 1) return App.subOperation;
-    if (mode === 2) return App.mulOperation;
-    if (mode === 3) return App.divOperation;
-    return App.addOperation;
   }
 }

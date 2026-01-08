@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Operator, operators } from '../operators';
 
 @Component({
   selector: 'app-op-selector',
@@ -8,9 +9,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './op-selector.scss',
 })
 export class OpSelector {
-  @Output() cachedMode = new EventEmitter<number>();
+  operators = operators;
+  @Output() cachedMode = new EventEmitter<Operator>();
 
   onRadioSelection(mode: number) {
-    this.cachedMode.emit(mode);
+    this.cachedMode.emit(operators[mode]);
   }
 }
