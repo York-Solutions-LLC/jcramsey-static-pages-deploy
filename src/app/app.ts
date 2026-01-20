@@ -1,4 +1,4 @@
-import { Component, Signal, signal, computed } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NumberInputField } from './number-input-field/number-input-field';
 import { Operator, operators } from './operators';

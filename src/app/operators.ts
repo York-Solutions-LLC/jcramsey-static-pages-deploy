@@ -31,6 +31,6 @@ addOp(operators, 'Add', 'Addition', (a: number, b: number) => a + b);
 addOp(operators, 'Sub', 'Subtraction', (a: number, b: number) => a - b);
 addOp(operators, 'Mul', 'Multiplication', (a: number, b: number) => a * b);
 addOp(operators, 'Div', 'Division', (a: number, b: number) => {
-  if (b == 0) return Number.NaN;
+  if (b === 0) return Number.NaN;
   return a / b;
 });
